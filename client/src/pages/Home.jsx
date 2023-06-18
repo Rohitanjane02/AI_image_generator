@@ -15,7 +15,33 @@ const RenderCards = ({data, title}) => {
 const Home = () => {
     const [loading, setLoading] = useState(false);
     const [allPosts, setAllPosts] = useState(null);
-    const [searchText, setsearchText] = useState(null);
+    const [searchText, setsearchText] = useState('');
+    
+      useEffect(() => {
+        //we have to make a call to get the post
+    const fetchPosts = async () => {
+        setLoading(true);
+        try {
+          const response = await fetch('http://localhost:8080/api/v1/post', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+    
+          if (response.ok) {
+            const result = await response.json();
+            setAllPosts(result.data.reverse());//reverse-> bcz we want to show the newest post at the top 
+          }
+        } catch (err) {
+          alert(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+        fetchPosts();
+      }, []);
+
     return (
         <section className='max-w-7xl mx-auto'>
             <div>
@@ -47,7 +73,7 @@ const Home = () => {
                                 />
                             ) : (
                                 <RenderCards
-                                    data={[]}
+                                    data={[allPosts]}
                                     title='No posts found'
                                 />
                             )}
@@ -60,3 +86,4 @@ const Home = () => {
 }
 
 export default Home
+
