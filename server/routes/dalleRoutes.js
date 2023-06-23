@@ -2,28 +2,14 @@ import express, { response } from 'express';
 import * as dotenv from 'dotenv';
 import {Configuration, OpenAIApi} from 'openai';//open AI opi
 
-// dotenv.config();
-
-// export const router = express.Router();
-
-// import express from 'express';
-// import * as dotenv from 'dotenv';
-// import { Configuration, Configuration, OpenAIApi } from 'openai';
-
 dotenv.config();
 const router = express.Router();
 
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 })
-// console.log(configuration);
 
 const openai = new OpenAIApi(configuration);
-
-// router.route('/').get((req, res)=>{
-//     res.send('Hello from DALL-E');
-// });
-
 // We will sending prompt to api to generate the img
 router.route('/').post(async(req,res)=> {
     try {
